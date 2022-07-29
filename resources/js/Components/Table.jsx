@@ -36,7 +36,7 @@ const Table = ({ headers, data, buttons }) => {
               <tr key={index} className='bg-white border-b dark:bg-slate-800 dark:border-gray-700'>
                 {
                   element.map((e, index) => (
-                    <td key={index} className='py-4 px-6'>
+                    <td key={index} className='py-4 px-6 capitalize'>
                       {e}
                     </td>
                   ))

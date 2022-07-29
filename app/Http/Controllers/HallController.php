@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hall;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HallController extends Controller
 {
@@ -14,7 +15,9 @@ class HallController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('halls/index', [
+            'halls' => Hall::all()
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class HallController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('halls/create');
     }
 
     /**
@@ -35,7 +38,20 @@ class HallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // create a regex pattern in format:Hall A## or hall A##
+        $pattern = '/^hall [A-Z]{1}[0-9]{2}$/i';
+
+        $request->validate(
+            [
+                'name' => ['required', 'string', 'regex:' . $pattern, 'unique:halls'],
+                'capacity' => 'required|integer|min:100|max:1000',
+            ],
+            [
+                'name.regex' => 'Hall name must be in format: Hall A##',
+            ]
+        );
+        Hall::create($request->all());
+        return redirect()->route('halls.index');
     }
 
     /**
