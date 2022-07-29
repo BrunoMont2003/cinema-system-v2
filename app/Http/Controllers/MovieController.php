@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MovieController extends Controller
 {
@@ -14,7 +15,9 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('movies/index', [
+            'movies' => Movie::all()
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('movies/create');
     }
 
     /**
@@ -35,7 +38,19 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request...
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'string|max:255',
+            'duration' => 'required|numeric|min:0|max:300',
+            'director' => 'required|string|max:255',
+            'poster_path' => 'url|max:255',
+            'release_year' => 'numeric|min:1900|max:2099',
+        ]);
+        // Create the movie...
+        $movie = Movie::create($request->all());
+        // Redirect to the movie's index
+        return redirect()->route('movies.index');
     }
 
     /**

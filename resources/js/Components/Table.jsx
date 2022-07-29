@@ -18,7 +18,7 @@ const Table = ({ headers, data, buttons }) => {
 
     <div className='overflow-x-auto relative'>
       <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-        <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+        <thead className='text-xs text-gray-700 uppercase bg-slate-300 dark:bg-gray-700 dark:text-gray-400'>
           <tr>
             {
               headers.map((col, index) => (
@@ -33,7 +33,7 @@ const Table = ({ headers, data, buttons }) => {
         <tbody>
           {
             data && filtered().map((element, index) => (
-              <tr key={index} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+              <tr key={index} className='bg-white border-b dark:bg-slate-800 dark:border-gray-700'>
                 {
                   element.map((e, index) => (
                     <td key={index} className='py-4 px-6'>

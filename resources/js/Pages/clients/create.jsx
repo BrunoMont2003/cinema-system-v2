@@ -7,25 +7,25 @@ import LinkButton from '@/Components/LinkButton'
 export default function CreateClient ({ auth, errors }) {
   const inputs = [
     {
-      title: 'dni',
+      label: 'dni',
       placeholder: 'Enter client dni',
       name: 'dni',
       type: 'text'
     },
     {
-      title: 'First Name',
+      label: 'First Name',
       placeholder: 'Enter client first name',
       name: 'first_name',
       type: 'text'
     },
     {
-      title: 'Last Name',
+      label: 'Last Name',
       placeholder: 'Enter client last name',
       name: 'last_name',
       type: 'text'
     },
     {
-      title: 'birth date',
+      label: 'birth date',
       placeholder: 'Enter client birth date',
       name: 'birth_date',
       type: 'date'
@@ -43,7 +43,7 @@ export default function CreateClient ({ auth, errors }) {
       errors={errors}
       header={<h2 className='font-semibold text-xl  leading-tight'>Manage Clients</h2>}
     >
-      <Head title='Manage Clients' />
+      <Head label='Manage Clients' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
         <h4 className='dark:text-white'>Add Client</h4>
         <Form routeName='clients.store' inputs={inputs} initialValues={initialValues} />

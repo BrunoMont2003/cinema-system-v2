@@ -4,6 +4,7 @@ import Button from './Button'
 import Input from './Input'
 import Label from './Label'
 import Select from './Select'
+import TextArea from './TextArea'
 import ValidationErrors from './ValidationErrors'
 
 const Form = ({ routeName, inputs, initialValues: values }) => {
@@ -24,12 +25,12 @@ const Form = ({ routeName, inputs, initialValues: values }) => {
 
       <form onSubmit={submit} className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
         {
-          inputs.map(({ name, title, type, options, placeholder }, key) => (
+          inputs.map(({ name, label, type, options, placeholder, required }, key) => (
             <div key={key}>
-              <Label forInput={name} value={title} />
+              <Label forInput={name} value={label} />
               {
-              type !== 'select'
-                ? <Input
+                type === 'textarea' && (
+                  <TextArea
                     type={type}
                     id={name}
                     placeholder={placeholder}
@@ -38,14 +39,29 @@ const Form = ({ routeName, inputs, initialValues: values }) => {
                     className='mt-1 block w-full '
                     handleChange={onHandleChange}
                   />
-                : <Select
+                )
+}
+              {
+                  type === 'select' && (<Select
                     id={name}
                     options={options} name={name}
                     value={data[name]}
                     className='mt-1 block w-full '
                     handleChange={onHandleChange}
-                  />
-            }
+                                        />)
+                }
+              {type !== 'select' && type !== 'textarea' && (
+
+                <Input
+                  required={required}
+                  type={type}
+                  id={name}
+                  placeholder={placeholder}
+                  name={name}
+                  value={data[name]}
+                  className='mt-1 block w-full '
+                  handleChange={onHandleChange}
+                />)}
             </div>
 
           ))
