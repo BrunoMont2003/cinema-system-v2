@@ -28,7 +28,7 @@ export const navitems = [
   },
   {
     name: 'functions',
-    routeName: '/funxtions',
+    routeName: '/functions',
     icon: 'fa-solid fa-play'
   },
   {

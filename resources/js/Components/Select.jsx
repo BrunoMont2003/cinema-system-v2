@@ -36,8 +36,8 @@ export default function Select ({
       >
         <option value='' disabled selected>Choose ...</option>
         {
-            options.map(({ id, name, number }, index) => (
-              <option key={index} value={id}>{name ?? number}</option>
+            options.map(({ value, label, id, title, name: n }, index) => (
+              <option key={index} value={value ?? id}>{label ?? title ?? n ?? value}</option>
             ))
         }
       </select>
