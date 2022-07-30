@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientviewController;
 use App\Http\Controllers\FunxtionController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\MovieController;
@@ -19,14 +20,12 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::resource('/clients', ClientController::class)->middleware(['auth', 'verified']);
 Route::resource('/seats', SeatController::class)->middleware(['auth', 'verified']);
 Route::resource('/functions', FunxtionController::class)->middleware(['auth', 'verified']);
 Route::resource('/tickets', TicketController::class)->middleware(['auth', 'verified']);
 Route::resource('/movies', MovieController::class)->middleware(['auth', 'verified']);
 Route::resource('/halls', HallController::class)->middleware(['auth', 'verified']);
+Route::get('/dashboard', [ClientviewController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/results', [ClientviewController::class, 'filterFunctions' ])->middleware(['auth', 'verified'])->name('clientview.results');
 require __DIR__ . '/auth.php';
