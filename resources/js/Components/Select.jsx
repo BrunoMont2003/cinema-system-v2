@@ -8,7 +8,8 @@ export default function Select ({
   required,
   isFocused,
   handleChange,
-  options
+  options,
+  defaultValue
 }) {
   const select = useRef()
 
@@ -31,10 +32,10 @@ export default function Select ({
         autoComplete={autoComplete}
         required={required}
         onChange={(e) => handleChange(e)}
-        defaultValue={value}
+        defaultValue={defaultValue}
 
       >
-        <option value='' disabled selected>Choose ...</option>
+        <option value='' disabled>Choose ...</option>
         {
             options.map(({ value, label, id, title, name: n }, index) => (
               <option key={index} value={value ?? id}>{label ?? title ?? n ?? value}</option>

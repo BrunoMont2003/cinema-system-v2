@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
 import LinkButton from '@/Components/LinkButton'
 
-export default function CreateMovie ({ auth, errors, movies, halls }) {
+export default function CreateFunction ({ auth, errors, movies, halls }) {
   const inputs = [
     {
       name: 'movie',

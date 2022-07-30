@@ -7,11 +7,18 @@ import Select from './Select'
 import TextArea from './TextArea'
 import ValidationErrors from './ValidationErrors'
 
-const Form = ({ routeName, inputs, initialValues: values }) => {
+const Form = ({ routeName, inputs, initialValues: values, extraOnChanges }) => {
   const { data, setData, post, processing, errors } = useForm({
     ...values
   })
   const onHandleChange = (event) => {
+    if (extraOnChanges) {
+      extraOnChanges.forEach(ex => {
+        if (event.target.name === ex.input) {
+          ex.onChange(event)
+        }
+      })
+    }
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
   }
   const submit = (e) => {

@@ -32,6 +32,11 @@ export const navitems = [
     icon: 'fa-solid fa-play'
   },
   {
+    name: 'seats',
+    routeName: '/seats',
+    icon: 'fa-solid fa-glasses'
+  },
+  {
     name: 'tickets',
     routeName: '/tickets',
     icon: 'fa-solid fa-ticket'
