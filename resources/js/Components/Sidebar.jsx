@@ -1,10 +1,8 @@
 import { useState } from 'react'
 
-import { Link } from '@inertiajs/inertia-react'
-import '@fortawesome/fontawesome-free/css/all.min.css'
+import { Link, usePage } from '@inertiajs/inertia-react'
 import ResponsiveNavLink from './ResponsiveNavLink'
 import ApplicationLogo from './ApplicationLogo'
-
 export const navitems = [
   {
     name: 'dashboard',
@@ -46,9 +44,9 @@ export const navitems = [
 export default function Sidebar ({ auth }) {
   const [collapseShow, setCollapseShow] = useState('hidden')
   const title = 'Cinema'
+  const { url } = usePage()
   return (
     <>
-
       <nav className='dark:bg-gray-800 dark:text-white md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 '>
         <div className='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full'>
           {/* Toggler */}
@@ -64,20 +62,15 @@ export default function Sidebar ({ auth }) {
             className='md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap uppercase font-bold p-4 px-0  text-xl ml-6'
             href='/'
           >
-
             <ApplicationLogo />
-            <span className='ml-5'>
-              {title}
-            </span>
+            <span className='ml-5'>{title}</span>
           </Link>
           {/* User */}
           <ul className='md:hidden items-center flex flex-wrap list-none ml-6'>
             <li className='inline-block relative'>
               {/* <NotificationDropdown /> */}
             </li>
-            <li className='inline-block relative'>
-              {/* <UserDropdown /> */}
-            </li>
+            <li className='inline-block relative'>{/* <UserDropdown /> */}</li>
           </ul>
           {/* Collapse */}
           <div
@@ -127,33 +120,21 @@ export default function Sidebar ({ auth }) {
             </h6>
             {/* Navigation */}
 
-            <ul className='md:flex-col md:min-w-full flex flex-col list-none ml-6'>
-              {
-                    navitems.map(({ icon, name, routeName }, index) => (
-                      <li key={index} className='items-center'>
-                        <Link
-                          className={
-                            'text-xs uppercase py-3 font-bold block ' +
-                            (window.location.href.indexOf('/admin/dashboard') !== -1
-                              ? 'text-lightBlue-500 hover:text-lightBlue-600'
-                              : 'text-blueGray-700 hover:text-blueGray-500')
-                          }
-                          href={routeName}
-                        >
-                          <i
-                            className={icon +
-                              ' mr-2 text-sm ' +
-                              (window.location.href.indexOf('/admin/dashboard') !== -1
-                                ? 'opacity-75'
-                                : 'text-blueGray-300')}
-                          />{' '}
-                          {name}
-                        </Link>
-                      </li>
-
-                    ))
-                }
-
+            <ul className='md:flex-col md:min-w-full flex flex-col list-none'>
+              {navitems.map(({ icon, name, routeName }, index) => (
+                <li key={index} className='items-center'>
+                  <Link
+                    className={`text-xs uppercase py-3 font-bold block pl-6 ${
+                      url.startsWith(routeName)
+                        ? 'bg-slate-800 dark:bg-slate-200 dark:text-black text-white rounded-md md:rounded-none'
+                        : ''
+                    }`}
+                    href={routeName}
+                  >
+                    <i className={icon + ' mr-2 text-sm '} /> {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
 
             {/* Divider */}
@@ -167,11 +148,14 @@ export default function Sidebar ({ auth }) {
             </div>
 
             <div className='mt-3 space-y-1'>
-              <ResponsiveNavLink method='post' href={route('logout')} as='button'>
+              <ResponsiveNavLink
+                method='post'
+                href={route('logout')}
+                as='button'
+              >
                 Log Out
               </ResponsiveNavLink>
             </div>
-
           </div>
         </div>
       </nav>
