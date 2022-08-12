@@ -21,7 +21,7 @@ export default function Authenticated ({ auth, header, children }) {
   }
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme='colored' />
 
       <Sidebar auth={auth} />
       <div className='relative md:ml-64 min-h-screen bg-gray-100 dark:bg-gray-800'>
