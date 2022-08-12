@@ -5,6 +5,7 @@ import Table from '@/Components/Table'
 import LinkButton from '@/Components/LinkButton'
 import moment from 'moment'
 import { Pagination } from 'flowbite-react'
+import { Inertia } from '@inertiajs/inertia'
 
 export default function Clients ({ auth, errors, clients: data }) {
   const [clients, setClients] = useState(null)
@@ -12,7 +13,7 @@ export default function Clients ({ auth, errors, clients: data }) {
   useEffect(() => {
     const size = 10
     const offset = size * (page - 1)
-    data.slice(offset, offset + size).forEach(client => {
+    data.slice(offset, offset + size).forEach((client) => {
       if (client.first_name && client.last_name) {
         client.name = client.first_name + ' ' + client.last_name
         delete client.first_name
@@ -32,7 +33,9 @@ export default function Clients ({ auth, errors, clients: data }) {
     <Authenticated
       auth={auth}
       errors={errors}
-      header={<h2 className='font-semibold text-xl  leading-tight'>Manage Clients</h2>}
+      header={
+        <h2 className='font-semibold text-xl  leading-tight'>Manage Clients</h2>
+      }
     >
       <Head title='Manage Clients' />
 
@@ -42,7 +45,26 @@ export default function Clients ({ auth, errors, clients: data }) {
             <h3 className='dark:text-white text-lg'>List of Clients</h3>
             <LinkButton href='/clients/create'>add</LinkButton>
           </div>
-          <Table headers={['#', 'dni', 'name', 'birthdate']} data={clients} />
+          <Table
+            headers={['#', 'dni', 'name', 'birthdate', '']}
+            data={clients}
+            buttons={[
+              {
+                name: 'edit',
+                className: 'dark:bg-blue-600 bg-blue-400',
+                icon: 'fa-solid fa-edit',
+                onClick: (e) => {
+                  Inertia.visit(`/clients/${e.target.dataset.row}/edit`)
+                }
+              },
+              {
+                name: 'delete',
+                className: 'dark:bg-red-600 bg-red-400',
+                icon: 'fa-solid fa-trash'
+              }
+            ]}
+          />
+
           {clients && (
             <div className='flex items-center justify-center text-center'>
               <Pagination

@@ -37,14 +37,19 @@ export default function CreateSeat ({ auth, errors, halls }) {
     <Authenticated
       auth={auth}
       errors={errors}
-      header={<h2 className='font-semibold text-xl  leading-tight'>Manage Seats</h2>}
+      header={
+        <h2 className='font-semibold text-xl  leading-tight'>Manage Seats</h2>
+      }
     >
       <Head title='Manage Seats' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
         <h4 className='dark:text-white'>Add Seat</h4>
-        <Form routeName='seats.store' inputs={inputs} initialValues={initialValues} />
-        <LinkButton href='/seats' className='w-24 bg-blue-600 dark:bg-blue-300'>go back</LinkButton>
-
+        <Form
+          routeName='seats.store'
+          inputs={inputs}
+          initialValues={initialValues}
+          goBackRoute='/seats'
+        />
       </div>
     </Authenticated>
   )

@@ -11,18 +11,14 @@ export default function CreateFunction ({ auth, errors, movies, halls }) {
       label: 'Movie',
       type: 'select',
       placeholder: 'Enter name of the movie',
-      options: [
-        ...movies
-      ]
+      options: [...movies]
     },
     {
       name: 'hall',
       label: 'Hall',
       type: 'select',
       placeholder: 'Enter name of the hall',
-      options: [
-        ...halls
-      ]
+      options: [...halls]
     },
     {
       name: 'showtime',
@@ -41,13 +37,21 @@ export default function CreateFunction ({ auth, errors, movies, halls }) {
     <Authenticated
       auth={auth}
       errors={errors}
-      header={<h2 className='font-semibold text-xl  leading-tight'>Manage Functions</h2>}
+      header={
+        <h2 className='font-semibold text-xl  leading-tight'>
+          Manage Functions
+        </h2>
+      }
     >
       <Head title='Manage Functions' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
         <h4 className='dark:text-white'>Add Function</h4>
-        <Form routeName='functions.store' inputs={inputs} initialValues={initialValues} />
-        <LinkButton href='/functions' className='w-24 bg-blue-600 dark:bg-blue-300'>go back</LinkButton>
+        <Form
+          routeName='functions.store'
+          inputs={inputs}
+          initialValues={initialValues}
+          goBackRoute='/functions'
+        />
 
       </div>
     </Authenticated>

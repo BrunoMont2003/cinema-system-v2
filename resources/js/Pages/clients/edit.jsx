@@ -2,9 +2,8 @@ import React from 'react'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
-import LinkButton from '@/Components/LinkButton'
 
-export default function CreateClient ({ auth, errors }) {
+export default function CreateClient ({ auth, errors, client }) {
   const inputs = [
     {
       label: 'dni',
@@ -32,10 +31,10 @@ export default function CreateClient ({ auth, errors }) {
     }
   ]
   const initialValues = {
-    dni: '',
-    first_name: '',
-    last_name: '',
-    birth_date: ''
+    dni: client.dni,
+    first_name: client.first_name,
+    last_name: client.last_name,
+    birth_date: client.birth_date
   }
   return (
     <Authenticated
@@ -47,11 +46,12 @@ export default function CreateClient ({ auth, errors }) {
     >
       <Head label='Manage Clients' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
-        <h4 className='dark:text-white'>Add Client</h4>
+        <h4 className='dark:text-white'>Edit Client</h4>
         <Form
-          routeName='clients.store'
+          routeName='clients.update'
           inputs={inputs}
           initialValues={initialValues}
+          method='put'
           goBackRoute='/clients'
         />
       </div>
