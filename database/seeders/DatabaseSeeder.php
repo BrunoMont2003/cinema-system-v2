@@ -19,11 +19,12 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Hall::factory(30)->create();
         // \App\Models\Funxtion::factory(30)->create();
         // \App\Models\Seat::factory(30)->create();
-        \App\Models\Ticket::factory(30)->create();
+        // \App\Models\Ticket::factory(30)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@test.com',
+            'password' => bcrypt('test'),
+        ]);
     }
 }
