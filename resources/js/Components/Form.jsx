@@ -15,7 +15,7 @@ const Form = ({
   method = 'post',
   goBackRoute
 }) => {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, put, processing, errors } = useForm({
     ...values
   })
   const onHandleChange = (event) => {
@@ -35,8 +35,14 @@ const Form = ({
   }
   const submit = (e) => {
     e.preventDefault()
-
-    post(route(routeName))
+    if (method === 'post') {
+      post(route(routeName))
+      return
+    }
+    if (method === 'put') {
+      console.log(data)
+      put(route(routeName, data.id), data)
+    }
   }
   return (
     <>

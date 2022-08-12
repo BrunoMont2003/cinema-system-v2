@@ -1,42 +1,42 @@
-import React from 'react'
+import { useEffect } from 'react'
 import Authenticated from '@/Layouts/Authenticated'
-import { Head } from '@inertiajs/inertia-react'
+import { Head, usePage } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
-import LinkButton from '@/Components/LinkButton'
 
-export default function CreateClient ({ auth, errors }) {
-  const inputs = [
-    {
-      label: 'dni',
-      placeholder: 'Enter client dni',
-      name: 'dni',
-      type: 'text'
-    },
-    {
-      label: 'First Name',
-      placeholder: 'Enter client first name',
-      name: 'first_name',
-      type: 'text'
-    },
-    {
-      label: 'Last Name',
-      placeholder: 'Enter client last name',
-      name: 'last_name',
-      type: 'text'
-    },
-    {
-      label: 'birth date',
-      placeholder: 'Enter client birth date',
-      name: 'birth_date',
-      type: 'date'
-    }
-  ]
-  const initialValues = {
-    dni: '',
-    first_name: '',
-    last_name: '',
-    birth_date: ''
+const inputs = [
+  {
+    label: 'dni',
+    placeholder: 'Enter client dni',
+    name: 'dni',
+    type: 'text'
+  },
+  {
+    label: 'First Name',
+    placeholder: 'Enter client first name',
+    name: 'first_name',
+    type: 'text'
+  },
+  {
+    label: 'Last Name',
+    placeholder: 'Enter client last name',
+    name: 'last_name',
+    type: 'text'
+  },
+  {
+    label: 'birth date',
+    placeholder: 'Enter client birth date',
+    name: 'birth_date',
+    type: 'date'
   }
+]
+const initialValues = {
+  dni: '',
+  first_name: '',
+  last_name: '',
+  birth_date: ''
+}
+export default function CreateClient ({ auth, errors }) {
+  
   return (
     <Authenticated
       auth={auth}

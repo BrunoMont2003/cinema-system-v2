@@ -1,33 +1,55 @@
 import React, { useEffect, useState } from 'react'
 import Authenticated from '@/Layouts/Authenticated'
-import { Head } from '@inertiajs/inertia-react'
+import { Head, usePage } from '@inertiajs/inertia-react'
 import Table from '@/Components/Table'
 import LinkButton from '@/Components/LinkButton'
 import moment from 'moment'
 import { Pagination } from 'flowbite-react'
 import { Inertia } from '@inertiajs/inertia'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Clients ({ auth, errors, clients: data }) {
   const [clients, setClients] = useState(null)
   const [page, setPage] = useState(1)
+  const { flash } = usePage().props
   useEffect(() => {
+    let currentPage = getCurrentPage()
+    currentPage = depureData(currentPage)
+    setClients(currentPage)
+    handleResponse()
+  }, [page])
+  const getCurrentPage = () => {
     const size = 10
     const offset = size * (page - 1)
-    data.slice(offset, offset + size).forEach((client) => {
-      if (client.first_name && client.last_name) {
-        client.name = client.first_name + ' ' + client.last_name
-        delete client.first_name
-        delete client.last_name
-        const date = moment(client.birth_date).format('LL')
-        delete client.birth_date
-        client.birth_date = date
-      }
-    })
-    setClients(data.slice(offset, offset + size))
-  }, [page])
+    return data.slice(offset, offset + size)
+  }
+
   const onPageChange = (page) => {
     console.log(page)
     setPage(page)
+  }
+  const depureData = (data) => {
+    const newData = []
+    data.forEach((client) => {
+      const newClient = { ...client }
+      newClient.name = newClient.first_name + ' ' + newClient.last_name
+      delete newClient.first_name
+      delete newClient.last_name
+      const date = moment(newClient.birth_date).format('LL')
+      delete newClient.birth_date
+      newClient.birth_date = date
+
+      newData.push(newClient)
+    })
+    return newData
+  }
+  const handleResponse = () => {
+    if (flash && flash.alert) {
+      if (flash.alert.type === 'success') return toast.success(flash.alert.message)
+      if (flash.alert.type === 'warning') return toast.warn(flash.alert.message)
+      if (flash.alert.type === 'error') return toast.error(flash.alert.message)
+    }
   }
   return (
     <Authenticated
@@ -45,6 +67,7 @@ export default function Clients ({ auth, errors, clients: data }) {
             <h3 className='dark:text-white text-lg'>List of Clients</h3>
             <LinkButton href='/clients/create'>add</LinkButton>
           </div>
+          <ToastContainer />
           <Table
             headers={['#', 'dni', 'name', 'birthdate', '']}
             data={clients}

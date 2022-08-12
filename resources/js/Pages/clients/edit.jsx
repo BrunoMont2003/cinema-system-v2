@@ -31,6 +31,7 @@ export default function CreateClient ({ auth, errors, client }) {
     }
   ]
   const initialValues = {
+    id: client.id,
     dni: client.dni,
     first_name: client.first_name,
     last_name: client.last_name,
