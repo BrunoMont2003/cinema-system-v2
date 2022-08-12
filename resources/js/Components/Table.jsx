@@ -45,7 +45,7 @@ const Table = ({ headers, data, buttons }) => {
                   {buttons &&
                     buttons.map(
                       (
-                        { name, icon, className, onClick, label, isLink },
+                        { name, icon, className, onClick, label, isLink, model },
                         index
                       ) => (
                         <Link
@@ -59,7 +59,7 @@ const Table = ({ headers, data, buttons }) => {
                           }}
                           // if is a link then we use the href otherwise we use the onClick
                           href={
-                            isLink ? `/clients/${element[0]}/${name}` : null
+                            isLink ? `/${model}/${element[0]}/${name}` : null
                           }
                           className={`${className} text-white flex items-center justify-center p-2 uppercase rounded gap-2`}
                         >

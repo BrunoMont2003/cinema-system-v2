@@ -76,12 +76,14 @@ export default function Clients ({ auth, errors, clients: data }) {
               data={clients}
               buttons={[
                 {
+                  model: 'clients',
                   name: '',
                   icon: 'fa-solid fa-eye',
                   className: 'dark:bg-green-700 bg-green-500',
                   isLink: true
                 },
                 {
+                  model: 'clients',
                   name: 'edit',
                   className: 'dark:bg-blue-600 bg-blue-400',
                   icon: 'fa-solid fa-edit',
