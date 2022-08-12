@@ -4,24 +4,30 @@ import DarkModeToggle from '@/Components/DarkModeToggle'
 import { toast, ToastContainer } from 'react-toastify'
 import { usePage } from '@inertiajs/inertia-react'
 import 'react-toastify/dist/ReactToastify.css'
+import { useModalContext } from '@/Context/ModalContext'
+import { useThemeContext } from '@/Context/ThemeContext'
 
 export default function Authenticated ({ auth, header, children }) {
   const { flash } = usePage().props
+  const { openModal } = useModalContext()
+  const { colorTheme } = useThemeContext()
   useEffect(() => {
     handleResponse()
-  }, [])
+  }, [openModal])
   const handleResponse = () => {
     if (flash && flash.alert) {
       // delete flash.alert after 5 seconds
       setTimeout(() => delete flash.alert, 5000)
-      if (flash.alert.type === 'success') return toast.success(flash.alert.message)
+      if (flash.alert.type === 'success') {
+        return toast.success(flash.alert.message)
+      }
       if (flash.alert.type === 'warning') return toast.warn(flash.alert.message)
       if (flash.alert.type === 'error') return toast.error(flash.alert.message)
     }
   }
   return (
     <>
-      <ToastContainer theme='colored' />
+      <ToastContainer theme={colorTheme === 'dark' ? 'light' : 'dark'} />
 
       <Sidebar auth={auth} />
       <div className='relative md:ml-64 min-h-screen bg-gray-100 dark:bg-gray-800'>

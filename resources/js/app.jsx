@@ -7,6 +7,7 @@ import { InertiaProgress } from '@inertiajs/progress'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ThemeProvider } from './Context/ThemeContext'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import { ModalProvider } from './Context/ModalContext'
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel'
@@ -20,7 +21,9 @@ createInertiaApp({
   setup ({ el, App, props }) {
     return render(
       <ThemeProvider>
-        <App {...props} />
+        <ModalProvider>
+          <App {...props} />
+        </ModalProvider>
       </ThemeProvider>,
       el
     )

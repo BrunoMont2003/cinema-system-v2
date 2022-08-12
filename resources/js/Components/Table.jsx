@@ -43,18 +43,31 @@ const Table = ({ headers, data, buttons }) => {
                 ))}
                 <td className='py-4 px-6 flex gap-2'>
                   {buttons &&
-                    buttons.map(({ name, icon, className, onClick, label }, index) => (
-                      <Link
-                        key={index}
-                        data-row={element[0]}
-                        onClick={onClick}
-                        href={`/clients/${element[0]}/${name}`}
-                        className={`${className} text-white flex items-center justify-center p-2 uppercase rounded gap-2`}
-                      >
-                        <i className={icon} />
-                        {label}
-                      </Link>
-                    ))}
+                    buttons.map(
+                      (
+                        { name, icon, className, onClick, label, isLink },
+                        index
+                      ) => (
+                        <Link
+                          key={index}
+                          data-row={element[0]}
+                          onClick={(e) => {
+                            if (!isLink) {
+                              e.preventDefault()
+                              onClick(element[0])
+                            }
+                          }}
+                          // if is a link then we use the href otherwise we use the onClick
+                          href={
+                            isLink ? `/clients/${element[0]}/${name}` : null
+                          }
+                          className={`${className} text-white flex items-center justify-center p-2 uppercase rounded gap-2`}
+                        >
+                          <i className={icon} />
+                          {label}
+                        </Link>
+                      )
+                    )}
                 </td>
               </tr>
             ))}
