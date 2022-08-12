@@ -8,11 +8,18 @@ use Inertia\Inertia;
 
 class HallController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected function getRules($id)
+    {
+        $pattern = '/^hall [A-Z]{1}[0-9]{2}$/i';
+        return [
+            'name' => ['required', 'string', 'regex:' . $pattern, 'unique:halls,name,' . $id],
+            'capacity' => 'required|integer|min:100|max:1000',
+        ];
+    }
+    protected $messages = [
+        'name.regex' => 'The name must be in the format of "hall A12".',
+        'name.unique' => 'The name has already been taken.',
+    ];
     public function index()
     {
         return Inertia::render('halls/index', [
@@ -20,82 +27,62 @@ class HallController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return Inertia::render('halls/create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // create a regex pattern in format:Hall A## or hall A##
-        $pattern = '/^hall [A-Z]{1}[0-9]{2}$/i';
 
         $request->validate(
-            [
-                'name' => ['required', 'string', 'regex:' . $pattern, 'unique:halls'],
-                'capacity' => 'required|integer|min:100|max:1000',
-            ],
-            [
-                'name.regex' => 'Hall name must be in format: Hall A##',
-            ]
+            $this->getRules(null),
+            $this->messages
         );
-        Hall::create($request->all());
-        return redirect()->route('halls.index');
+        $hall = Hall::create($request->all());
+        return redirect()->route('halls.index')->with('alert', [
+            'type' => 'success',
+            'message' => $hall->name . ' created successfully.',
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Hall $hall)
+    public function show($id)
     {
-        //
+        $hall = Hall::findOrFail($id);
+        return Inertia::render('halls/show', [
+            'hall' => $hall,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Hall $hall)
+    public function edit($id)
     {
-        //
+        $hall = Hall::findOrFail($id);
+        return Inertia::render('halls/edit', [
+            'hall' => $hall,
+        ]);
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate(
+            $this->getRules($id),
+            $this->messages
+        );
+        $hall = Hall::findOrFail($id);
+        $hall->update($request->all());
+        return redirect()->route('halls.index')->with('alert', [
+            'type' => 'success',
+            'message' => $hall->name . ' updated successfully.',
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Hall $hall)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Hall $hall)
-    {
-        //
+        $hall = Hall::findOrFail($id);
+        $hall->delete();
+        return redirect()->route('halls.index')->with('alert', [
+            'type' => 'success',
+            'message' => $hall->name . ' deleted successfully.',
+        ]);
     }
 }
