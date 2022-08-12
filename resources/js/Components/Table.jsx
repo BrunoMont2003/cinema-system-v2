@@ -43,16 +43,16 @@ const Table = ({ headers, data, buttons }) => {
                 ))}
                 <td className='py-4 px-6 flex gap-2'>
                   {buttons &&
-                    buttons.map(({ name, icon, className, onClick }, index) => (
+                    buttons.map(({ name, icon, className, onClick, label }, index) => (
                       <Link
                         key={index}
                         data-row={element[0]}
                         onClick={onClick}
                         href={`/clients/${element[0]}/${name}`}
-                        className={`${className} text-white flex items-center justify-center p-2 uppercase rounded-lg`}
+                        className={`${className} text-white flex items-center justify-center p-2 uppercase rounded gap-2`}
                       >
-                        <i className={`${icon} ${name ? 'mr-2' : ''} `} />
-                        {name}
+                        <i className={icon} />
+                        {label}
                       </Link>
                     ))}
                 </td>

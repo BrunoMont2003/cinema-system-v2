@@ -40,9 +40,11 @@ class ClientController extends Controller
         ]);
     }
 
-    public function show(Client $client)
+    public function show($id)
     {
-        //
+        return Inertia::render('clients/show', [
+            'client' => Client::find($id),
+        ]);
     }
     public function edit(Client $client)
     {

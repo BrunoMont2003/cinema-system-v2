@@ -12,9 +12,9 @@ export default function Authenticated ({ auth, header, children }) {
   }, [])
   const handleResponse = () => {
     if (flash && flash.alert) {
-      if (flash.alert.type === 'success') {
-        return toast.success(flash.alert.message)
-      }
+      // delete flash.alert after 5 seconds
+      setTimeout(() => delete flash.alert, 5000)
+      if (flash.alert.type === 'success') return toast.success(flash.alert.message)
       if (flash.alert.type === 'warning') return toast.warn(flash.alert.message)
       if (flash.alert.type === 'error') return toast.error(flash.alert.message)
     }

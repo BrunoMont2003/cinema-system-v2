@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
 import Authenticated from '@/Layouts/Authenticated'
-import { Head, usePage } from '@inertiajs/inertia-react'
+import { Head } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
 
 const inputs = [
@@ -36,7 +35,6 @@ const initialValues = {
   birth_date: ''
 }
 export default function CreateClient ({ auth, errors }) {
-  
   return (
     <Authenticated
       auth={auth}

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import Table from '@/Components/Table'
 import LinkButton from '@/Components/LinkButton'
 import moment from 'moment'
 import { Pagination } from 'flowbite-react'
-import { Inertia } from '@inertiajs/inertia'
-import 'react-toastify/dist/ReactToastify.css'
 
 export default function Clients ({ auth, errors, clients: data }) {
   const [clients, setClients] = useState(null)
@@ -63,12 +61,14 @@ export default function Clients ({ auth, errors, clients: data }) {
             data={clients}
             buttons={[
               {
+                name: '',
+                icon: 'fa-solid fa-eye',
+                className: 'dark:bg-green-700 bg-green-500'
+              },
+              {
                 name: 'edit',
                 className: 'dark:bg-blue-600 bg-blue-400',
-                icon: 'fa-solid fa-edit',
-                onClick: (e) => {
-                  Inertia.visit(`/clients/${e.target.dataset.row}/edit`)
-                }
+                icon: 'fa-solid fa-edit'
               },
               {
                 name: 'delete',
