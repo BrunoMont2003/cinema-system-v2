@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Authenticated from '@/Layouts/Authenticated'
-import { Head, usePage } from '@inertiajs/inertia-react'
+import { Head } from '@inertiajs/inertia-react'
 import Table from '@/Components/Table'
 import LinkButton from '@/Components/LinkButton'
 import moment from 'moment'
 import { Pagination } from 'flowbite-react'
 import { Inertia } from '@inertiajs/inertia'
-import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function Clients ({ auth, errors, clients: data }) {
   const [clients, setClients] = useState(null)
   const [page, setPage] = useState(1)
-  const { flash } = usePage().props
   useEffect(() => {
     let currentPage = getCurrentPage()
     currentPage = depureData(currentPage)
     setClients(currentPage)
-    handleResponse()
   }, [page])
   const getCurrentPage = () => {
     const size = 10
@@ -44,13 +41,7 @@ export default function Clients ({ auth, errors, clients: data }) {
     })
     return newData
   }
-  const handleResponse = () => {
-    if (flash && flash.alert) {
-      if (flash.alert.type === 'success') return toast.success(flash.alert.message)
-      if (flash.alert.type === 'warning') return toast.warn(flash.alert.message)
-      if (flash.alert.type === 'error') return toast.error(flash.alert.message)
-    }
-  }
+
   return (
     <Authenticated
       auth={auth}
@@ -67,7 +58,6 @@ export default function Clients ({ auth, errors, clients: data }) {
             <h3 className='dark:text-white text-lg'>List of Clients</h3>
             <LinkButton href='/clients/create'>add</LinkButton>
           </div>
-          <ToastContainer />
           <Table
             headers={['#', 'dni', 'name', 'birthdate', '']}
             data={clients}
