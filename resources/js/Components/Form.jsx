@@ -1,5 +1,7 @@
+import { Inertia } from '@inertiajs/inertia'
 import { Link, useForm } from '@inertiajs/inertia-react'
 import React from 'react'
+import { toast } from 'react-toastify'
 import Button from './Button'
 import Input from './Input'
 import Label from './Label'
@@ -15,7 +17,7 @@ const Form = ({
   method = 'post',
   goBackRoute
 }) => {
-  const { data, setData, post, put, processing, errors } = useForm({
+  const { data, setData, processing, errors } = useForm({
     ...values
   })
   const onHandleChange = (event) => {
@@ -35,14 +37,31 @@ const Form = ({
   }
   const submit = (e) => {
     e.preventDefault()
-    if (method === 'post') {
-      post(route(routeName))
-      return
-    }
-    if (method === 'put') {
-      console.log(data)
-      put(route(routeName, data.id), data)
-    }
+    if (method === 'post') return post()
+    if (method === 'put') return put()
+  }
+
+  const post = () => {
+    Inertia.post(route(routeName), data, {
+      onError: (errors) => {
+        displayErrors(errors)
+      }
+    })
+  }
+  const put = () => {
+    Inertia.put(route(routeName, data.id), data, {
+      onError: (errors) => {
+        displayErrors(errors)
+      }
+    })
+  }
+
+  const displayErrors = (errors = {}) => {
+    Object.keys(errors).forEach((key) => {
+      toast.error(errors[key], {
+        autoClose: false
+      })
+    })
   }
   return (
     <>

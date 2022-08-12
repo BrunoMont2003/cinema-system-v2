@@ -3,6 +3,7 @@ import Sidebar from '@/Components/Sidebar'
 import DarkModeToggle from '@/Components/DarkModeToggle'
 import { toast, ToastContainer } from 'react-toastify'
 import { usePage } from '@inertiajs/inertia-react'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Authenticated ({ auth, header, children }) {
   const { flash } = usePage().props
