@@ -1,8 +1,15 @@
+import React from 'react'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
 
-export default function CreateFunction ({ auth, errors, movies, halls }) {
+export default function CreateFunction ({
+  auth,
+  errors,
+  function: func,
+  movies,
+  halls
+}) {
   const inputs = [
     {
       name: 'movie',
@@ -27,9 +34,10 @@ export default function CreateFunction ({ auth, errors, movies, halls }) {
     }
   ]
   const initialValues = {
-    movie: '',
-    hall: '',
-    showtime: ''
+    id: func.id,
+    movie: func.movie_id,
+    hall: func.hall_id,
+    showtime: func.showtime
   }
   return (
     <Authenticated
@@ -41,16 +49,16 @@ export default function CreateFunction ({ auth, errors, movies, halls }) {
         </h2>
       }
     >
-      <Head title='Manage Functions' />
+      <Head label='Manage Functions' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
-        <h4 className='dark:text-white'>Add Function</h4>
+        <h4 className='dark:text-white'>Edit Function</h4>
         <Form
-          routeName='functions.store'
+          routeName='functions.update'
           inputs={inputs}
           initialValues={initialValues}
+          method='put'
           goBackRoute='/functions'
         />
-
       </div>
     </Authenticated>
   )
