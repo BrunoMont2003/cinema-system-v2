@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('funxtion_id')->constrained();
-            $table->foreignId('client_id')->constrained();
-            $table->foreignId('seat_id')->constrained();
+            $table->foreignId('funxtion_id')->constrained()->onDelete('cascade');
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
+            $table->foreignId('seat_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
