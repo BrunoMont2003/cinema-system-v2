@@ -29,11 +29,11 @@ export const navitems = [
     routeName: '/functions',
     icon: 'fa-solid fa-play'
   },
-  {
-    name: 'seats',
-    routeName: '/seats',
-    icon: 'fa-solid fa-glasses'
-  },
+  // {
+  //   name: 'seats',
+  //   routeName: '/seats',
+  //   icon: 'fa-solid fa-glasses'
+  // },
   {
     name: 'tickets',
     routeName: '/tickets',
