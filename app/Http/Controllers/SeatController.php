@@ -10,11 +10,11 @@ use Inertia\Inertia;
 
 class SeatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $rules = [
+        'hall' => 'required|exists:halls,id',
+        'row' => 'required|string|size:1',
+        'column' => 'required|integer|min:1|max:25',
+    ];
     public function index()
     {
         $seats = Seat::all();
@@ -25,12 +25,6 @@ class SeatController extends Controller
             'seats' => $seats,
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $halls = Hall::all();
@@ -38,21 +32,10 @@ class SeatController extends Controller
             'halls' => $halls,
         ]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // validate the request...
-        $validator = Validator::make($request->all(), [
-            'hall' => 'required|exists:halls,id',
-            'row' => 'required|string|size:1',
-            'column' => 'required|integer|min:1|max:25',
-        ]);
+        $validator = Validator::make($request->all(), $this->rules);
         if ($validator->fails()) {
             return redirect('/seats/create')
                 ->withErrors($validator)
@@ -77,51 +60,61 @@ class SeatController extends Controller
         $seat->column = $request->column;
         $seat->save();
         // redirect to the index
-        return redirect('/seats');
+        return redirect('/seats')->with('alert', ['type' => 'success', 'message' => 'Seat ' . $seat->row . $seat->column . ' created successfully']);
+    }
+    public function show($id)
+    {
+        $seat = Seat::find($id);
+        $seat['hall'] = Hall::find($seat['hall_id']);
+        return Inertia::render('seats/show', [
+            'seat' => $seat,
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Seat $seat)
+    public function edit($id)
     {
-        //
+        $seat = Seat::find($id);
+        $halls = Hall::all();
+        return Inertia::render('seats/edit', [
+            'seat' => $seat,
+            'halls' => $halls,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Seat $seat)
+    public function update(Request $request, $id)
     {
-        //
+        // validate the request...
+        $validator = Validator::make($request->all(), $this->rules);
+        if ($validator->fails()) {
+            return redirect('/seats/' . $id . '/edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $seat = Seat::find($id);
+        // validate if the row and column are unique together
+        $seats = Seat::where('hall_id', $request->hall)
+            ->where('row', $request->row)
+            ->where('column', $request->column)->get();
+        $is_this_seat = $seats->count() == 1 && ($seat->row == $seats[0]->row) && ($seat->column == $seats[0]->column) && ($seat->hall->id == $seats[0]->hall->id);
+        if ($seats->count() > 0 && !$is_this_seat) {
+            return redirect('/seats/' . $id . '/edit')
+                ->withErrors(['row' => 'Row and column combination already exists'])
+                ->withInput();
+        }
+        // update the seat
+        $seat->hall_id = $request->hall;
+        // row uppercase
+        $seat->row = strtoupper($request->row);
+        $seat->column = $request->column;
+        $seat->save();
+        // redirect to the index
+        return redirect('/seats')->with('alert', ['type' => 'success', 'message' => 'Seat ' . $seat->row . $seat->column . ' updated successfully']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Seat $seat)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Seat $seat)
-    {
-        //
+        $seat = Seat::find($id);
+        $seat->delete();
+        return redirect('/seats')->with('alert', ['type' => 'success', 'message' => 'Seat ' . $seat->row . $seat->column . ' deleted successfully']);
     }
 }

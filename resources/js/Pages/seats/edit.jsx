@@ -1,8 +1,9 @@
+import React from 'react'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
 
-export default function CreateSeat ({ auth, errors, halls }) {
+export default function EditSeat ({ auth, errors, seat, halls }) {
   const inputs = [
     {
       name: 'hall',
@@ -27,10 +28,12 @@ export default function CreateSeat ({ auth, errors, halls }) {
     }
   ]
   const initialValues = {
-    hall: '',
-    row: '',
-    column: ''
+    id: seat.id,
+    hall: seat.hall_id,
+    row: seat.row,
+    column: seat.column
   }
+
   return (
     <Authenticated
       auth={auth}
@@ -39,13 +42,14 @@ export default function CreateSeat ({ auth, errors, halls }) {
         <h2 className='font-semibold text-xl  leading-tight'>Manage Seats</h2>
       }
     >
-      <Head title='Manage Seats' />
+      <Head label='Manage Seats' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
-        <h4 className='dark:text-white'>Add Seat</h4>
+        <h4 className='dark:text-white'>Edit Seat</h4>
         <Form
-          routeName='seats.store'
+          routeName='seats.update'
           inputs={inputs}
           initialValues={initialValues}
+          method='put'
           goBackRoute='/seats'
         />
       </div>
