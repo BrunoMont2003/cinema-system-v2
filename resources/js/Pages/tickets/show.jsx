@@ -2,18 +2,30 @@ import Description from '@/Components/Description'
 import LinkButton from '@/Components/LinkButton'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
-export default function ShowTicket ({ auth, errors, ticket: data }) {
+export default function ShowTicket ({
+  auth,
+  errors,
+  movie,
+  client,
+  function: f,
+  seat,
+  hall
+}) {
   const [ticket, setTicket] = useState(null)
   useEffect(() => {
     const formatted = formatData()
-    console.log(formatted)
     setTicket(formatted)
   }, [])
   const formatData = () => {
-    const newTicket = {}
-    newTicket.place = `${data.row}${data.column}`
-    newTicket.hall = data.hall.name
+    const newTicket = { }
+    newTicket.movie = movie.title
+    newTicket.client = client.first_name + ' ' + client.last_name
+    newTicket.date = moment(f.showtime).format('LL')
+    newTicket.time = moment(f.showtime).format('LT')
+    newTicket.hall = hall.name
+    newTicket.seat = seat.row + seat.column
     return newTicket
   }
   return (
@@ -30,7 +42,6 @@ export default function ShowTicket ({ auth, errors, ticket: data }) {
           <Description
             title='Ticket Information'
             object={ticket}
-            images={['poster']}
           />
         )}
         <div className='flex justify-end'>

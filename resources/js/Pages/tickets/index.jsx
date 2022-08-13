@@ -41,7 +41,7 @@ export default function Tickets ({ auth, errors, tickets: data }) {
     setOpenModal(true)
     const ticket = tickets.find((ticket) => ticket.id === id)
     setModalValues({
-      key: `${ticket.row.toUpperCase()}${ticket.column} - ${ticket.hall}`,
+      key: `${ticket.client_name} - ${ticket.hall_name} -  ${ticket.movie_title} - ${ticket.date} - ${ticket.time}`,
       title: 'ticket',
       id
     })

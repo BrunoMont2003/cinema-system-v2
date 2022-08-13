@@ -8,6 +8,7 @@ use App\Models\Seat;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class TicketController extends Controller
@@ -53,8 +54,29 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
-        //validate request
-        $request->validate($this->rules);
+        // create a validator
+        $validator = Validator::make($request->all(), $this->rules);
+        // if the validator fails, redirect back to the form
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        //custom hook validator
+        // validate if the seat is free for the function
+        $funxtion = Funxtion::find($request->function);
+        $seat = Seat::find($request->seat);
+        $seat_funxtion = DB::table('tickets')
+            ->where('funxtion_id', $funxtion->id)
+            ->where('seat_id', $seat->id)
+            ->first();
+        if ($seat_funxtion) {
+            return redirect()
+                ->back()
+                ->withErrors(['seat' => 'The seat is not free for the function.']);
+        }
+
         //create ticket
         $ticket = Ticket::create([
             'funxtion_id' => $request->function,
@@ -78,12 +100,17 @@ class TicketController extends Controller
         $function = Funxtion::find($ticket->funxtion_id);
         //get the seat
         $seat = Seat::find($ticket->seat_id);
+        //get the movie
+        $movie = $function->movie;
+        //get the hall
+        $hall = $function->hall;
         //return the view
         return Inertia::render('tickets/show', [
-            'ticket' => $ticket,
             'client' => $client,
             'function' => $function,
             'seat' => $seat,
+            'movie' => $movie,
+            'hall' => $hall,
         ]);
     }
     public function edit($id)
@@ -108,17 +135,36 @@ class TicketController extends Controller
     }
     public function update(Request $request, $id)
     {
-        // validate request
-        $request->validate($this->rules);
-        // get the ticket
+        // create a validator
+        $validator = Validator::make($request->all(), $this->rules);
+        // if the validator fails, redirect back to the form
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        //custom hook validator
+        // validate if the seat is free for the function but ignore the current ticket
+        $funxtion = Funxtion::find($request->function);
+        $seat = Seat::find($request->seat);
+        $seat_funxtion = DB::table('tickets')
+            ->where('funxtion_id', $funxtion->id)
+            ->where('seat_id', $seat->id)
+            ->where('id', '!=', $id)
+            ->first();
+        if ($seat_funxtion) {
+            return redirect()
+                ->back()
+                ->withErrors(['seat' => 'The seat is not free for the function.']);
+        }
+        //update ticket
         $ticket = Ticket::find($id);
-        // update the ticket
-        $ticket->update([
-            'funxtion_id' => $request->function,
-            'client_id' => $request->client,
-            'seat_id' => $request->seat,
-        ]);
-        // redirect to index
+        $ticket->funxtion_id = $request->function;
+        $ticket->client_id = $request->client;
+        $ticket->seat_id = $request->seat;
+        $ticket->save();
+        //redirect to index
         return redirect()->route('tickets.index')->with('alert', [
             'type' => 'success',
             'message' => 'Ticket updated successfully',
