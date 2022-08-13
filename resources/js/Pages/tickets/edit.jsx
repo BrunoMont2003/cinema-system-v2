@@ -4,14 +4,39 @@ import Form from '@/Components/Form'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 
-export default function CreateTicket ({
+const formatSeats = (seats) => {
+  return seats.map((seat) => {
+    return {
+      value: seat.id,
+      label: seat.row + '-' + seat.column
+    }
+  })
+}
+export default function EditTicket ({
   auth,
   errors,
   functions,
   clients,
-  seats: allSeats
+  seats: allSeats,
+  ticket
 }) {
-  const [seats, setSeats] = useState([])
+  const initialValues = {
+    id: ticket.id,
+    client: ticket.client_id,
+    function: ticket.funxtion_id,
+    seat: ticket.seat_id
+  }
+  const getSeatsFromFunction = (functionId) => {
+    const func = functions.find((func) => func.id === functionId)
+    const hallId = func.hall.id
+    const functionSeats = allSeats.filter((seat) => {
+      return seat.hall_id === hallId
+    })
+    return functionSeats
+  }
+  const [seats, setSeats] = useState([
+    ...formatSeats(getSeatsFromFunction(ticket.funxtion_id))
+  ])
   const [seatsChanged, setSeatsChanged] = useState(false)
   useEffect(() => {}, [seatsChanged])
   const [inputs, setInputs] = useState([
@@ -51,12 +76,8 @@ export default function CreateTicket ({
   ])
   const handleFunctionOnChange = (e) => {
     const functionId = parseInt(e.target.value)
-    const func = getFunctionByID(functionId)
-    console.log(func)
-    const hallId = [...functions].find((f) => f.id === functionId).hall.id
-    const functionSeats = allSeats.filter((seat) => {
-      return seat.hall_id === hallId
-    })
+    const functionSeats = getSeatsFromFunction(functionId)
+    console.log(functionSeats)
     setSeats(functionSeats)
     setSeatsChanged(!seatsChanged)
     setInputs((inputs) =>
@@ -73,15 +94,7 @@ export default function CreateTicket ({
       })
     )
   }
-  const getFunctionByID = (id) => {
-    return functions.find((f) => f.id === id)
-  }
 
-  const initialValues = {
-    client: '',
-    function: '',
-    seat: ''
-  }
   return (
     <Authenticated
       auth={auth}
@@ -92,9 +105,9 @@ export default function CreateTicket ({
     >
       <Head title='Manage Tickets' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
-        <h4 className='dark:text-white'>Add Ticket</h4>
+        <h4 className='dark:text-white'>Edit Ticket</h4>
         <Form
-          routeName='tickets.store'
+          routeName='tickets.update'
           inputs={inputs}
           initialValues={initialValues}
           extraOnChanges={[
@@ -104,6 +117,7 @@ export default function CreateTicket ({
             }
           ]}
           goBackRoute='/tickets'
+          method='put'
         />
       </div>
     </Authenticated>

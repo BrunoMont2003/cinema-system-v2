@@ -7,35 +7,32 @@ use App\Models\Funxtion;
 use App\Models\Seat;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    protected $rules = [
+        'function' => 'required|exists:funxtions,id',
+        'client' => 'required|exists:clients,id',
+        'seat' => 'required|exists:seats,id',
+    ];
     public function index()
     {
-        $tickets = Ticket::all();
-        foreach ($tickets as $ticket) {
-            $ticket['funxtion'] = $ticket->funxtion;
-            $ticket['client'] = $ticket->client;
-            $ticket['seat'] = $ticket->seat;
-            $ticket['movie'] = $ticket->funxtion->movie;
-            $ticket['hall'] = $ticket->funxtion->hall;
-        }
+        $tickets = DB::table('tickets')
+            ->join('clients', 'tickets.client_id', '=', 'clients.id')
+            ->join('funxtions', 'tickets.funxtion_id', '=', 'funxtions.id')
+            ->join('seats', 'tickets.seat_id', '=', 'seats.id')
+            ->join('movies', 'funxtions.movie_id', '=', 'movies.id')
+            ->join('halls', 'funxtions.hall_id', '=', 'halls.id')
+            ->select('tickets.id', DB::raw('CONCAT(clients.first_name," ", clients.last_name) as client_name'), 'movies.title as movie_title', 'halls.name as hall_name', DB::raw('CONCAT(seats.row,"",seats.column) as seat'), 'funxtions.showtime as showtime')
+            ->get();
         return Inertia::render('tickets/index', [
-            'tickets' => $tickets,
+            'tickets' => $tickets
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $functions = Funxtion::all();
@@ -54,20 +51,10 @@ class TicketController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //validate request
-        $request->validate([
-            'function' => 'required|exists:funxtions,id',
-            'client' => 'required|exists:clients,id',
-            'seat' => 'required|exists:seats,id',
-        ]);
+        $request->validate($this->rules);
         //create ticket
         $ticket = Ticket::create([
             'funxtion_id' => $request->function,
@@ -75,51 +62,78 @@ class TicketController extends Controller
             'seat_id' => $request->seat,
         ]);
         //redirect to index
-        return redirect()->route('tickets.index');
+        return redirect()->route('tickets.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Ticket created successfully',
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ticket $ticket)
+    public function show($id)
     {
-        //
+        //get the ticket
+        $ticket = Ticket::find($id);
+        //get the client
+        $client = Client::find($ticket->client_id);
+        //get the function
+        $function = Funxtion::find($ticket->funxtion_id);
+        //get the seat
+        $seat = Seat::find($ticket->seat_id);
+        //return the view
+        return Inertia::render('tickets/show', [
+            'ticket' => $ticket,
+            'client' => $client,
+            'function' => $function,
+            'seat' => $seat,
+        ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ticket $ticket)
+    public function edit($id)
     {
-        //
+        //get the ticket
+        $ticket = Ticket::find($id);
+        $functions = Funxtion::all();
+        $client = Client::all();
+        $seats  = Seat::all();
+        // insert movies and halls inner functions
+        foreach ($functions as $function) {
+            $function['movie'] = $function->movie;
+            $function['hall'] = $function->hall;
+        }
+
+        return Inertia::render('tickets/edit', [
+            'functions' => $functions,
+            'clients' => $client,
+            'seats' => $seats,
+            'ticket' => $ticket,
+        ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, $id)
     {
-        //
+        // validate request
+        $request->validate($this->rules);
+        // get the ticket
+        $ticket = Ticket::find($id);
+        // update the ticket
+        $ticket->update([
+            'funxtion_id' => $request->function,
+            'client_id' => $request->client,
+            'seat_id' => $request->seat,
+        ]);
+        // redirect to index
+        return redirect()->route('tickets.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Ticket updated successfully',
+        ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ticket $ticket)
+    public function destroy($id)
     {
-        //
+        // get the ticket
+        $ticket = Ticket::find($id);
+        // delete the ticket
+        $ticket->delete();
+        // redirect to index
+        return redirect()->route('tickets.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Ticket deleted successfully',
+        ]);
     }
 }
