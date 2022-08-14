@@ -3,7 +3,7 @@ import { Tooltip } from 'flowbite-react'
 import { useState } from 'react'
 const Seat = ({ seat, isExample }) => {
   const [status, setStatus] = useState(seat.status)
-  const { seatsSelected, setSeatsSelected, setSelected, selected } =
+  const { seatsSelected, setSeatsSelected, setSelected } =
     useSeatsContext()
   const handleChange = ({ target: { dataset } }) => {
     const seatId = dataset.seatId
@@ -16,10 +16,6 @@ const Seat = ({ seat, isExample }) => {
       setStatus('selected')
     }
     setSelected(seatId)
-
-    // setSelected(seatId)
-    // setSeatsSelected([...seatsSelected, seat])
-    // setStatus(status === 'selected' ? 'free' : 'selected')
   }
   if (isExample && status === 'free') {
     return (
