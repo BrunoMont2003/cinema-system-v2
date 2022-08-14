@@ -8,6 +8,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ThemeProvider } from './Context/ThemeContext'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import { ModalProvider } from './Context/ModalContext'
+import { SeatsProvider } from './Context/SeatsContext'
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel'
@@ -20,11 +21,13 @@ createInertiaApp({
     ),
   setup ({ el, App, props }) {
     return render(
-      <ThemeProvider>
-        <ModalProvider>
-          <App {...props} />
-        </ModalProvider>
-      </ThemeProvider>,
+      <SeatsProvider>
+        <ThemeProvider>
+          <ModalProvider>
+            <App {...props} />
+          </ModalProvider>
+        </ThemeProvider>
+      </SeatsProvider>,
       el
     )
   }
