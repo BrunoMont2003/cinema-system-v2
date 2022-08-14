@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +16,7 @@ class SeatSeeder extends Seeder
     {
         foreach (\App\Models\Hall::all() as $hall) {
             $capacity = $hall->capacity;
-            $number_of_columns = intdiv($capacity, 10);
+            $number_of_columns = $hall->number_of_columns;
             if (DB::table('seats')->where('hall_id', $hall->id)->count() >= $capacity) {
                 break;
             }

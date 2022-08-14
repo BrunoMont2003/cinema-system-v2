@@ -10,7 +10,7 @@ class Hall extends Model
 {
     use HasFactory;
     use CascadesDeletes;
-    protected $fillable = ['name', 'capacity'];
+    protected $fillable = ['name', 'capacity', 'number_of_columns'];
     protected $deletesCascade = ['funxtions', 'seats'];
     public function funxtions()
     {

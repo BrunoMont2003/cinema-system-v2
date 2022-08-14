@@ -3,7 +3,6 @@ import SearchCombo from '@/Components/SearchCombo'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 export default function ClientView ({ auth, errors, movies, days, functions, movie, date }) {
-  console.log(movie, date)
   return (
     <Authenticated
       auth={auth}

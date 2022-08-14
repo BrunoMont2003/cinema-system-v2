@@ -18,7 +18,8 @@ class HallFactory extends Factory
     {
         return [
             'name' => $this->faker->bothify('Hall ?##'),
-            'capacity' => $this->faker->numberBetween(200, 500),
+            'capacity' => $this->faker->numberBetween(160, 250),
+            'number_of_columns' => $this->faker->numberBetween(10, 15),
         ];
     }
 }

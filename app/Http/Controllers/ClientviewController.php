@@ -67,4 +67,25 @@ class ClientviewController extends Controller
             'date' => $date,
         ]);
     }
+    public function chooseSeats($id)
+    {
+        $function = Funxtion::findOrFail($id);
+        // insert the movie into the function
+        $function->movie = $function->movie()->first();
+        // insert the hall into the function
+        $function->hall = $function->hall()->first();
+
+        // get the seats of the function
+        $seats = $function->hall->seats()->get();
+
+        // set the status of the seat, if it is on a ticket for the function, it is busy else it is free
+        foreach ($seats as $seat) {
+            $seat->status = $seat->tickets()->where('funxtion_id', $function->id)->first() ? 'busy' : 'free';
+        }
+
+        return Inertia::render('clientview/seats', [
+            'function' => $function,
+            'seats' => $seats,
+        ]);
+    }
 }

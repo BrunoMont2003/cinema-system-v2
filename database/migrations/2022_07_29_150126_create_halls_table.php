@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->integer('capacity');
+            $table->integer('number_of_columns')->default(12);
             $table->timestamps();
         });
     }

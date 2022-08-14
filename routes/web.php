@@ -27,5 +27,6 @@ Route::resource('/tickets', TicketController::class)->middleware(['auth', 'verif
 Route::resource('/movies', MovieController::class)->middleware(['auth', 'verified']);
 Route::resource('/halls', HallController::class)->middleware(['auth', 'verified']);
 Route::get('/dashboard', [ClientviewController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/results', [ClientviewController::class, 'filterFunctions' ])->middleware(['auth', 'verified'])->name('clientview.results');
+Route::get('/results', [ClientviewController::class, 'filterFunctions'])->middleware(['auth', 'verified'])->name('clientview.results');
+Route::get('/functions/{id}/seats', [ClientviewController::class, 'chooseSeats'])->middleware(['auth', 'verified'])->name('clientview.seats');
 require __DIR__ . '/auth.php';
