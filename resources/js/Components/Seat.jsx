@@ -32,7 +32,7 @@ const Seat = ({ seat, isExample }) => {
   }
   return (
     <>
-      <Tooltip content={`${seat.row}${seat.column}`} style='light'>
+      <Tooltip content={`${seat.row}${seat.column}`} style='light' trigger='hover'>
         {status === 'free' && (
           <button
             onClick={handleChange}

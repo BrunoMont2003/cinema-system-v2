@@ -10,8 +10,8 @@ const Hall = ({ seats = [], numberOfColumns = 12 }) => {
   useEffect(() => {}, [selected])
 
   return (
-    <section className='flex flex-col gap-24 mt-8'>
-      <article className='flex flex-col gap-2 items-center'>
+    <section className='flex flex-col gap-12 mt-8'>
+      <article className='flex flex-col gap-2 items-center mb-12'>
         <h1 className='text-5xl font-black text-slate-800 dark:text-slate-500 text-opacity-25'>
           Screen
         </h1>
@@ -51,7 +51,7 @@ const Hall = ({ seats = [], numberOfColumns = 12 }) => {
           ))}
         </div>
       </article>
-      <article className='flex gap-5 flex-wrap items-center justify-center w-full pb-5'>
+      <article className='flex gap-5 flex-wrap items-center justify-center w-full '>
         <div className='flex items-center gap-2'>
           <Seat seat={{ status: 'free' }} isExample />
           <span className='text-slate-500 dark:text-slate-100'>Available</span>
@@ -70,7 +70,7 @@ const Hall = ({ seats = [], numberOfColumns = 12 }) => {
           <h3 className='text-slate-800 text-xl font-black dark:text-slate-200 capitalize'>
             selected Seats{' '}
           </h3>
-          <div className='flex  gap-2 items-center'>
+          <div className='flex  gap-2 items-center flex-wrap'>
             {seatsSelected.map((seatId, index) => {
               const seat = seats.find((seat) => seat.id === parseInt(seatId))
               return (
@@ -78,8 +78,9 @@ const Hall = ({ seats = [], numberOfColumns = 12 }) => {
                   className='text-slate-600 dark:text-slate-500 font-bold'
                   key={index}
                 >
-                  {seat.row}
-                  {seat.column}
+                  {index === seatsSelected.length - 1
+                    ? `${seat.row}${seat.column}`
+                    : `${seat.row}${seat.column} , `}
                 </span>
               )
             })}

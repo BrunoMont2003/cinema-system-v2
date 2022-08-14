@@ -1,11 +1,13 @@
 import Hall from '@/Components/Hall'
 import MovieCard from '@/Components/MovieCard'
+import { useSeatsContext } from '@/Context/SeatsContext'
 import Authenticated from '@/Layouts/Authenticated'
-import { Head } from '@inertiajs/inertia-react'
+import { Head, Link } from '@inertiajs/inertia-react'
 import { useEffect } from 'react'
 
 const ChooseSeats = ({ auth, errors, function: f, seats }) => {
-  useEffect(() => {}, [])
+  const { seatsSelected, selected } = useSeatsContext()
+  useEffect(() => {}, [selected])
   return (
     <Authenticated
       auth={auth}
@@ -19,6 +21,23 @@ const ChooseSeats = ({ auth, errors, function: f, seats }) => {
         <MovieCard func={f} />
         <div className='px-10 w-full xl:w-[calc(100%-300px)]'>
           <Hall seats={seats} numberOfColumns={f.hall.number_of_columns} />
+        </div>
+        <div>
+          {seatsSelected.length > 0
+            ? (
+              <Link href={`/functions/${f.id}/tickets`}>
+                <a className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+                  Continue
+                </a>
+              </Link>
+              )
+            : (
+              <button disabled>
+                <a className='bg-gray-500  text-white font-bold py-2 px-4 rounded'>
+                  Continue
+                </a>
+              </button>
+              )}
         </div>
       </div>
     </Authenticated>
