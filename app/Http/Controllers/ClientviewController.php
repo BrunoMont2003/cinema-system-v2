@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Funxtion;
 use App\Models\Movie;
+use App\Models\Ticket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -86,6 +88,76 @@ class ClientviewController extends Controller
         return Inertia::render('clientview/seats', [
             'function' => $function,
             'seats' => $seats,
+        ]);
+    }
+    public function createTickets(Request $request, $id)
+    {
+
+        $clients = Client::all();
+        $function = Funxtion::findOrFail($id);
+        $function->movie = $function->movie()->first();
+        $function->hall = $function->hall()->first();
+        $seatsIds = $request->seats;
+        $seats = $function->hall->seats()->whereIn('id', $seatsIds)->get();
+        return Inertia::render(
+            'clientview/tickets/create',
+            [
+                'function' => $function,
+                'seats' => $seats,
+                'clients' => $clients,
+            ]
+        );
+    }
+    public function storeTickets(Request $request, $id)
+    {
+        // validate the request...
+        $validated = $request->validate([
+            'seats' => 'required|array',
+            'seats.*' => 'required|integer|exists:seats,id',
+            'client_id' => 'required|integer|exists:clients,id',
+        ]);
+        $function = Funxtion::findOrFail($id);
+        $function->movie = $function->movie()->first();
+        $function->hall = $function->hall()->first();
+        $seatsIds = $validated['seats'];
+        $seats = $function->hall->seats()->whereIn('id', $seatsIds)->get();
+        $client = Client::find($validated['client_id']);
+        $tickets = [];
+        foreach ($seats as $seat) {
+            $ticket = new Ticket();
+            $ticket->seat_id = $seat->id;
+            $ticket->funxtion_id = $function->id;
+            $ticket->client_id = $client->id;
+            $ticket->save();
+            array_push($tickets, $ticket);
+        }
+        // get a array of the id's of the tickets
+        $ticketIds = array_map(function ($ticket) {
+            return $ticket->id;
+        }, $tickets);
+        return redirect()->route('clientview.tickets.show', ['id' => $function->id, 'tickets' => $ticketIds, 'function' => $function, 'client_id' => $client->id]);
+    }
+    public function showTickets(Request $request, $functionId)
+    {
+        $validated = $request->validate([
+            'tickets' => 'required|array',
+            'client_id' => 'required|integer|exists:clients,id',
+        ]);
+        //get client
+        $client = Client::find($validated['client_id']);
+        //get tickets
+        $tickets = Ticket::whereIn('id', $validated['tickets'])->get();
+        $function = Funxtion::findOrFail($functionId);
+        $function->movie = $function->movie()->first();
+        $function->hall = $function->hall()->first();
+        // insert seat into ticket
+        foreach ($tickets as $ticket) {
+            $ticket->seat = $ticket->seat()->first();
+        }
+        return Inertia::render('clientview/tickets/success', [
+            'tickets' => $tickets,
+            'function' => $function,
+            'client' => $client
         ]);
     }
 }

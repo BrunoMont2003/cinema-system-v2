@@ -111,6 +111,7 @@ class TicketController extends Controller
             'seat' => $seat,
             'movie' => $movie,
             'hall' => $hall,
+            'ticket' => $ticket,
         ]);
     }
     public function edit($id)

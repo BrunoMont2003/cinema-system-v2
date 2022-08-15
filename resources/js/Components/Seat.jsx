@@ -1,10 +1,15 @@
 import { useSeatsContext } from '@/Context/SeatsContext'
 import { Tooltip } from 'flowbite-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 const Seat = ({ seat, isExample }) => {
   const [status, setStatus] = useState(seat.status)
-  const { seatsSelected, setSeatsSelected, setSelected } =
-    useSeatsContext()
+  const { seatsSelected, setSeatsSelected, setSelected } = useSeatsContext()
+  useEffect(() => {
+    // if the seatid is already selected, set the status to selected
+    if (seatsSelected.includes(`${seat.id}`)) {
+      setStatus('selected')
+    }
+  }, [seatsSelected])
   const handleChange = ({ target: { dataset } }) => {
     const seatId = dataset.seatId
     // if the seat is already in the array of seats selected then remove it from the array
@@ -32,7 +37,11 @@ const Seat = ({ seat, isExample }) => {
   }
   return (
     <>
-      <Tooltip content={`${seat.row}${seat.column}`} style='light' trigger='hover'>
+      <Tooltip
+        content={`${seat.row}${seat.column}`}
+        style='light'
+        trigger='hover'
+      >
         {status === 'free' && (
           <button
             onClick={handleChange}

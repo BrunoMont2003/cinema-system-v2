@@ -11,7 +11,8 @@ export default function ShowTicket ({
   client,
   function: f,
   seat,
-  hall
+  hall,
+  ticket: data
 }) {
   const [ticket, setTicket] = useState(null)
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function ShowTicket ({
     setTicket(formatted)
   }, [])
   const formatData = () => {
-    const newTicket = { }
+    const newTicket = {}
     newTicket.movie = movie.title
     newTicket.client = client.first_name + ' ' + client.last_name
     newTicket.date = moment(f.showtime).format('LL')
@@ -38,14 +39,18 @@ export default function ShowTicket ({
     >
       <Head label='Manage Tickets' />
       <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col flex-wrap gap-5 py-5'>
-        {ticket && (
-          <Description
-            title='Ticket Information'
-            object={ticket}
-          />
-        )}
-        <div className='flex justify-end'>
+        {ticket && <Description title='Ticket Information' object={ticket} />}
+        <div className='flex justify-end gap-5'>
           <LinkButton href='/tickets'>GO BACK</LinkButton>
+          <LinkButton
+            href={`/functions/${f.id}/tickets`}
+            data={{
+              tickets: [data.id],
+              client_id: client.id
+            }}
+          >
+            View Ticket
+          </LinkButton>
         </div>
       </div>
     </Authenticated>

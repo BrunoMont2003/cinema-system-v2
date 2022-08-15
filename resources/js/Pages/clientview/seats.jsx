@@ -22,23 +22,28 @@ const ChooseSeats = ({ auth, errors, function: f, seats }) => {
         <div className='px-10 w-full xl:w-[calc(100%-300px)]'>
           <Hall seats={seats} numberOfColumns={f.hall.number_of_columns} />
         </div>
-        <div>
-          {seatsSelected.length > 0
-            ? (
-              <Link href={`/functions/${f.id}/tickets`}>
-                <a className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                  Continue
-                </a>
-              </Link>
-              )
-            : (
-              <button disabled>
-                <a className='bg-gray-500  text-white font-bold py-2 px-4 rounded'>
-                  Continue
-                </a>
-              </button>
-              )}
-        </div>
+      </div>
+      <div className='pr-12 pb-10 flex justify-end'>
+        {seatsSelected.length > 0
+          ? (
+            <Link
+              href={`/functions/${f.id}/tickets/create`}
+              method='get'
+              data={{
+                seats: seatsSelected
+              }}
+              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            >
+              Continue
+            </Link>
+            )
+          : (
+            <button disabled>
+              <a className='bg-gray-500  text-white font-bold py-2 px-4 rounded'>
+                Continue
+              </a>
+            </button>
+            )}
       </div>
     </Authenticated>
   )
