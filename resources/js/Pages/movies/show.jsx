@@ -2,6 +2,7 @@ import Description from '@/Components/Description'
 import LinkButton from '@/Components/LinkButton'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 export default function ShowMovie ({ auth, errors, movie: data }) {
   const [movie, setMovie] = useState(null)
@@ -14,7 +15,7 @@ export default function ShowMovie ({ auth, errors, movie: data }) {
     const newMovie = { }
     newMovie.title = data.title
     newMovie.description = data.description
-    newMovie['release year'] = data.release_year
+    newMovie['release date'] = moment(data.release_date).format('LL')
     newMovie.director = data.director
     newMovie.poster = data.poster_path
     return newMovie

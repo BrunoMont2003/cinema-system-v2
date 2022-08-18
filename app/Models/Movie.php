@@ -10,7 +10,7 @@ class Movie extends Model
 {
     use HasFactory;
     use CascadesDeletes;
-    protected $fillable = ['title', 'duration', 'director', 'description', 'poster_path', 'release_year'];
+    protected $fillable = ['title', 'duration', 'director', 'description', 'poster_path', 'release_date'];
 
     protected $deletesCascade = ['funxtions'];
     public function funxtions()

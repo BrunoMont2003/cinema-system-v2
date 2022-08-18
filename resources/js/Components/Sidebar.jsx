@@ -1,15 +1,9 @@
 import { useState } from 'react'
 
 import { Link, usePage } from '@inertiajs/inertia-react'
-import ResponsiveNavLink from './ResponsiveNavLink'
 import ApplicationLogo from './ApplicationLogo'
 import { useSidebarContext } from '@/Context/SidebarContext'
-export const navitems = [
-  {
-    name: 'dashboard',
-    routeName: '/dashboard',
-    icon: 'fas fa-tv'
-  },
+export const managementLinks = [
   {
     name: 'clients',
     routeName: '/clients',
@@ -39,6 +33,18 @@ export const navitems = [
     name: 'tickets',
     routeName: '/tickets',
     icon: 'fa-solid fa-ticket'
+  }
+]
+export const mainLinks = [
+  {
+    name: 'dashboard',
+    routeName: '/dashboard',
+    icon: 'fa-solid fa-tv'
+  },
+  {
+    name: 'billboard',
+    routeName: '/billboard',
+    icon: 'fa-solid fa-play'
   }
 ]
 
@@ -138,7 +144,7 @@ export default function Sidebar ({ auth }) {
             {/* Navigation */}
 
             <ul className='md:flex-col md:min-w-full flex flex-col list-none'>
-              {navitems.map(({ icon, name, routeName }, index) => (
+              {managementLinks.map(({ icon, name, routeName }, index) => (
                 <li key={index} className='items-center'>
                   <Link
                     className={`flex gap-2 items-center ${

@@ -22,7 +22,7 @@ class MovieFactory extends Factory
             'duration' => $this->faker->numberBetween(1, 300),
             'director' => $this->faker->name(),
             'poster_path' => $this->faker->imageUrl(),
-            'release_year' => $this->faker->year(),
+            'release_date' => $this->faker->date('Y-m-d'),
         ];
     }
 }

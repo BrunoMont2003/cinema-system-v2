@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('director');
             $table->text('description')->nullable();
             $table->string('poster_path')->nullable();
-            $table->integer('release_year')->nullable();
+            $table->date('release_date')->nullable();
             $table->timestamps();
         });
     }

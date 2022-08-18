@@ -39,10 +39,10 @@ export default function EditMovie ({ auth, errors, movie }) {
       placeholder: 'Poster url of the movie'
     },
     {
-      name: 'release_year',
-      label: 'Release Year',
-      type: 'number',
-      placeholder: 'Release year of the movie'
+      name: 'release_date',
+      label: 'Release Date',
+      type: 'date',
+      placeholder: 'Release date of the movie'
     }
   ]
   const initialValues = {
@@ -52,7 +52,7 @@ export default function EditMovie ({ auth, errors, movie }) {
     director: movie.director,
     description: movie.description,
     poster_path: movie.poster_path,
-    release_year: movie.release_year
+    release_date: movie.release_date
   }
   return (
     <Authenticated

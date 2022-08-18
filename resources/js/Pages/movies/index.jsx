@@ -32,7 +32,7 @@ export default function Movies ({ auth, errors, movies: data }) {
       newMovie.duration = movie.duration + 'min'
       delete newMovie.description
       delete newMovie.poster_path
-      delete newMovie.release_year
+      delete newMovie.release_date
       newData.push(newMovie)
     })
     return newData

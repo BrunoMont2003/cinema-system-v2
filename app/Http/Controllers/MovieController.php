@@ -17,7 +17,7 @@ class MovieController extends Controller
             'duration' => 'required|numeric|min:0|max:300',
             'director' => 'required|string|max:255',
             'poster_path' => 'url|max:255',
-            'release_year' => 'numeric|min:1900|max:2099',
+            'release_date' => 'required|date',
         ];
     }
     public function index()

@@ -2,7 +2,6 @@ import React from 'react'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head } from '@inertiajs/inertia-react'
 import Form from '@/Components/Form'
-import LinkButton from '@/Components/LinkButton'
 
 export default function CreateMovie ({ auth, errors }) {
   const inputs = [
@@ -40,10 +39,10 @@ export default function CreateMovie ({ auth, errors }) {
       placeholder: 'Poster url of the movie'
     },
     {
-      name: 'release_year',
-      label: 'Release Year',
-      type: 'number',
-      placeholder: 'Release year of the movie'
+      name: 'release_date',
+      label: 'Release Date',
+      type: 'date',
+      placeholder: 'Release date of the movie'
     }
   ]
   const initialValues = {
@@ -52,7 +51,7 @@ export default function CreateMovie ({ auth, errors }) {
     director: '',
     description: '',
     poster_path: '',
-    release_year: ''
+    release_date: ''
   }
   return (
     <Authenticated
