@@ -6,11 +6,13 @@ import { usePage } from '@inertiajs/inertia-react'
 import 'react-toastify/dist/ReactToastify.css'
 import { useModalContext } from '@/Context/ModalContext'
 import { useThemeContext } from '@/Context/ThemeContext'
+import { useSidebarContext } from '@/Context/SidebarContext'
 
 export default function Authenticated ({ auth, header, children }) {
   const { flash } = usePage().props
   const { openModal } = useModalContext()
   const { colorTheme } = useThemeContext()
+  const { sidebarShow } = useSidebarContext()
   useEffect(() => {
     handleResponse()
   }, [openModal])
@@ -30,7 +32,11 @@ export default function Authenticated ({ auth, header, children }) {
       <ToastContainer theme={colorTheme === 'dark' ? 'light' : 'dark'} />
 
       <Sidebar auth={auth} />
-      <div className='relative md:ml-64 min-h-screen bg-gray-100 dark:bg-gray-800'>
+      <div
+        className={`relative ${
+          sidebarShow ? 'md:ml-64' : 'md:ml-8'
+        } min-h-screen bg-gray-100 dark:bg-gray-800`}
+      >
         {header && (
           <header className='pr-5 bg-white dark:bg-gray-900  border-b  flex justify-between items-center'>
             <div className='max-w-7xl py-[37.5px] px-4 sm:px-6 lg:px-8 dark:text-white text-gray-800'>

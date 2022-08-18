@@ -9,6 +9,7 @@ import { ThemeProvider } from './Context/ThemeContext'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import { ModalProvider } from './Context/ModalContext'
 import { SeatsProvider } from './Context/SeatsContext'
+import { SidebarProvider } from './Context/SidebarContext'
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel'
@@ -21,13 +22,15 @@ createInertiaApp({
     ),
   setup ({ el, App, props }) {
     return render(
-      <SeatsProvider>
-        <ThemeProvider>
-          <ModalProvider>
-            <App {...props} />
-          </ModalProvider>
-        </ThemeProvider>
-      </SeatsProvider>,
+      <SidebarProvider>
+        <SeatsProvider>
+          <ThemeProvider>
+            <ModalProvider>
+              <App {...props} />
+            </ModalProvider>
+          </ThemeProvider>
+        </SeatsProvider>
+      </SidebarProvider>,
       el
     )
   }
