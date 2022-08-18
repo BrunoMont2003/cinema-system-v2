@@ -50,8 +50,8 @@ export default function Sidebar ({ auth }) {
   return (
     <>
       <nav
-        className={`dark:bg-gray-800 dark:text-white md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 ${
-          !sidebarShow ? 'md:absolute md:top-0 md:-left-[210px]' : ''
+        className={`dark:bg-gray-800 dark:text-white md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 duration-600 ease-in-out ${
+          !sidebarShow ? 'md:top-0 md:-left-[210px]' : ''
         }`}
       >
         <div className='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full'>
@@ -142,7 +142,9 @@ export default function Sidebar ({ auth }) {
                 <li key={index} className='items-center'>
                   <Link
                     className={`flex gap-2 items-center ${
-                      !sidebarShow ? 'flex-row-reverse justify-between pr-2' : ''
+                      !sidebarShow
+                        ? 'flex-row-reverse justify-between pr-2'
+                        : ''
                     } text-xs uppercase py-3 font-bold block pl-6 ${
                       url.startsWith(routeName)
                         ? 'bg-slate-800 dark:bg-slate-200 dark:text-black text-white rounded-md md:rounded-none'
@@ -167,14 +169,24 @@ export default function Sidebar ({ auth }) {
               </div>
             </div>
 
-            <div className='mt-3 space-y-1'>
-              <ResponsiveNavLink
+            <div
+              className={`mt-3 space-y-1 flex ${
+                !sidebarShow ? 'flex-row-reverse' : ''
+              }`}
+            >
+              <Link
+                className={`dark:text-white text-gray-500 hover:bg-slate-100 dark:hover:bg-gray-700 duration-500 rounded w-full flex items-center font-light px-4 py-4 text-sm gap-5 ${
+                  !sidebarShow ? 'flex-row-reverse' : ''
+                }`}
                 method='post'
                 href={route('logout')}
                 as='button'
               >
-                Log Out
-              </ResponsiveNavLink>
+                <i className='fa-solid fa-arrow-right-from-bracket hidden' />
+                <span className={`${!sidebarShow ? 'block' : ''}`}>
+                  Log Out
+                </span>
+              </Link>
             </div>
           </div>
         </div>

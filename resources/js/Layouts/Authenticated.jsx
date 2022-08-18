@@ -34,7 +34,7 @@ export default function Authenticated ({ auth, header, children }) {
       <Sidebar auth={auth} />
       <div
         className={`relative ${
-          sidebarShow ? 'md:ml-64' : 'md:ml-8'
+          sidebarShow ? 'md:ml-64' : 'md:ml-12'
         } min-h-screen bg-gray-100 dark:bg-gray-800`}
       >
         {header && (
