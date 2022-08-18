@@ -7,7 +7,7 @@ export default function ClientView ({ auth, errors, movies, days, functions, mov
     <Authenticated
       auth={auth}
       errors={errors}
-      header={<h2 className='font-semibold text-xl  leading-tight'>Manage Clients</h2>}
+      header={<h2 className='font-semibold text-xl  leading-tight'>Dashboard</h2>}
     >
       <Head title='Manage Clients' />
 
