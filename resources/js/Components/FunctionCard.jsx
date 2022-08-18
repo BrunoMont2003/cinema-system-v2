@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-const MovieCard = ({ func }) => {
+const FunctionCard = ({ func }) => {
   return (
     <div className='p-5 flex flex-col gap-2 items-center  w-[300px] dark:text-slate-50 '>
       <figure className='w-[164px] h-[164px] rounded-full overflow-hidden dark:shadow-white shadow-md mb-2'>
@@ -34,4 +34,4 @@ const MovieCard = ({ func }) => {
   )
 }
 
-export default MovieCard
+export default FunctionCard

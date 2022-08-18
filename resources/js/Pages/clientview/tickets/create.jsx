@@ -1,4 +1,4 @@
-import MovieCard from '@/Components/MovieCard'
+import FunctionCard from '@/Components/FunctionCard'
 import Select from '@/Components/Select'
 import Authenticated from '@/Layouts/Authenticated'
 import { Inertia } from '@inertiajs/inertia'
@@ -55,7 +55,7 @@ const CreateTickets = ({ clients, auth, errors, function: f, seats }) => {
     >
       <Head title='Manage Clients' />
       <div className='py-8 sm:px-6 flex flex-col gap-5 items-center xl:flex-row xl:items-center max-w-7xl'>
-        <MovieCard func={f} />
+        <FunctionCard func={f} />
         <form
           className='flex flex-col gap-5 px-10 w-full'
           onSubmit={handleSubmit}

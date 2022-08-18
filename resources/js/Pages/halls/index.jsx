@@ -30,6 +30,7 @@ export default function Halls ({ auth, errors, halls: data }) {
     const newData = []
     data.forEach((hall) => {
       const newHall = { ...hall }
+      delete newHall.number_of_columns
       newData.push(newHall)
     })
     return newData

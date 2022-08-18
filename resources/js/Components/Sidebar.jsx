@@ -42,9 +42,9 @@ export const mainLinks = [
     icon: 'fa-solid fa-tv'
   },
   {
-    name: 'billboard',
-    routeName: '/billboard',
-    icon: 'fa-solid fa-play'
+    name: 'premiere',
+    routeName: '/premiere',
+    icon: 'fa-solid fa-clapperboard'
   }
 ]
 
@@ -138,6 +138,33 @@ export default function Sidebar ({ auth }) {
             {/* Divider */}
             <hr className='my-4 md:min-w-full' />
             {/* Heading */}
+            <h6 className='md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline ml-6'>
+              Main
+            </h6>
+            <ul className='md:flex-col md:min-w-full flex flex-col list-none'>
+              {mainLinks.map(({ icon, name, routeName }, index) => (
+                <li key={index} className='items-center'>
+                  <Link
+                    className={`flex gap-2 items-center ${
+                      !sidebarShow
+                        ? 'flex-row-reverse justify-between pr-2'
+                        : ''
+                    } text-xs uppercase py-3 font-bold block pl-6 ${
+                      url.startsWith(routeName)
+                        ? 'bg-slate-800 dark:bg-slate-200 dark:text-black text-white rounded-md md:rounded-none'
+                        : ''
+                    }`}
+                    href={routeName}
+                  >
+                    <i className={icon + ' mr-2 text-sm '} />
+                    <span>{name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {/* Divider */}
+            <hr className='my-4 md:min-w-full' />
+
             <h6 className='md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline ml-6'>
               Management
             </h6>

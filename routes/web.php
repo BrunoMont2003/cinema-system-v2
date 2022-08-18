@@ -32,4 +32,5 @@ Route::get('/functions/{id}/seats', [ClientviewController::class, 'chooseSeats']
 Route::get('/functions/{id}/tickets/create', [ClientviewController::class, 'createTickets'])->middleware(['auth', 'verified'])->name('clientview.tickets.create');
 Route::post('/functions/{id}/tickets', [ClientviewController::class, 'storeTickets'])->middleware(['auth', 'verified'])->name('clientview.tickets.store');
 Route::get('/functions/{id}/tickets', [ClientviewController::class, 'showTickets'])->middleware(['auth', 'verified'])->name('clientview.tickets.show');
+Route::get('/premiere', [ClientviewController::class, 'getBillboard'])->middleware(['auth', 'verified'])->name('clientview.premiere');
 require __DIR__ . '/auth.php';

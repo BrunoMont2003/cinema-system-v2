@@ -24,6 +24,14 @@ const TicketsCreated = ({ auth, errors, function: f, tickets, client }) => {
           <Ticket key={ticket.id} func={f} ticket={ticket} client={client} />
         ))}
       </div>
+      <div className='flex pb-5 w-full justify-center'>
+        <Link
+          href='/dashboard'
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        >
+          Back to Dashboard
+        </Link>
+      </div>
     </Authenticated>
   )
 }

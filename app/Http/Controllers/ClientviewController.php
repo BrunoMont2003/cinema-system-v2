@@ -160,4 +160,13 @@ class ClientviewController extends Controller
             'client' => $client
         ]);
     }
+
+    public function getBillboard()
+    {
+        // get the movies wich their release_date is in these days
+        $movies = Movie::where('release_date', '>=', Carbon::now()->toDateString())->where('release_date', '<=', Carbon::now()->addMonth()->toDateString())->get();
+        return Inertia::render('clientview/premiere/index', [
+            'movies' => $movies,
+        ]);
+    }
 }
