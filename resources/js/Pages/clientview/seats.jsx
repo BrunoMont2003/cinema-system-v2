@@ -20,7 +20,9 @@ const ChooseSeats = ({ auth, errors, function: f, seats }) => {
       <div className='py-8 px-6 flex flex-col gap-5 items-center xl:flex-row xl:items-start'>
         <FunctionCard func={f} />
         <div className='px-10 w-full xl:w-[calc(100%-300px)]'>
-          <Hall seats={seats} numberOfColumns={f.hall.number_of_columns} />
+          {seats && seats.length > 0 && (
+            <Hall seats={seats} numberOfColumns={f.hall.number_of_columns} />
+          )}
         </div>
       </div>
       <div className='pr-12 pb-10 flex justify-end'>

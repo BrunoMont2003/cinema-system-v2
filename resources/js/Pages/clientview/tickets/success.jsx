@@ -1,12 +1,13 @@
 import Ticket from '@/Components/Ticket'
+import { useSeatsContext } from '@/Context/SeatsContext'
 import Authenticated from '@/Layouts/Authenticated'
 import { Head, Link } from '@inertiajs/inertia-react'
 import { useEffect } from 'react'
 
 const TicketsCreated = ({ auth, errors, function: f, tickets, client }) => {
+  const { setSeatsSelected } = useSeatsContext()
   useEffect(() => {
-    console.log(tickets)
-    console.log(client)
+    setSeatsSelected([])
   }, [])
   return (
     <Authenticated

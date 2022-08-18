@@ -71,7 +71,7 @@ export default function Login ({ status, canResetPassword }) {
             <label className='flex items-center'>
               <Checkbox name='remember' value={data.remember} handleChange={onHandleChange} />
 
-              <span className='ml-2 text-sm text-gray-600'>Remember me</span>
+              <span className='ml-2 text-sm text-gray-600 dark:text-gray-300'>Remember me</span>
             </label>
           </div>
 
@@ -79,7 +79,7 @@ export default function Login ({ status, canResetPassword }) {
             {canResetPassword && (
               <Link
                 href={route('password.request')}
-                className='underline text-sm text-gray-600 hover:text-gray-900'
+                className='underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
               >
                 Forgot your password?
               </Link>
