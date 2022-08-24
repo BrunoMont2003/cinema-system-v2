@@ -7,7 +7,7 @@ import { Pagination } from 'flowbite-react'
 import ConfirmDelete from '@/Components/ConfirmDelete'
 import { useModalContext } from '@/Context/ModalContext'
 import moment from 'moment'
-
+import { ToPdf } from '@/Helpers/toPdf'
 export default function Tickets ({ auth, errors, tickets: data }) {
   const [tickets, setTickets] = useState(null)
   const [page, setPage] = useState(1)
@@ -65,7 +65,16 @@ export default function Tickets ({ auth, errors, tickets: data }) {
           <div className='flex gap-5 flex-col mx-5 lg:w-[80%] lg:mx-auto'>
             <div className='flex justify-between'>
               <h3 className='dark:text-white text-lg'>List of Tickets</h3>
-              <LinkButton href='/tickets/create'>add</LinkButton>
+              <div className='flex gap-5'>
+                <button
+                  className='bg-red-600 flex items-center justify-center  dark:bg-red-700 px-3 rounded font-bold text-slate-100'
+                  onClick={() => { ToPdf('Tickets', ['ID', 'CLIENT', 'MOVIE', 'HALL', 'SEAT', 'DATE', 'TIME'], depureData(data)) }}
+                >
+                  <i className='fa-regular fa-file-pdf text-xl' />
+                </button>
+                <LinkButton href='/tickets/create'>add</LinkButton>
+              </div>
+
             </div>
             <Table
               headers={['#', 'client', 'movie', 'hall', 'seat', 'date', 'time', '']}

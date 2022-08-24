@@ -7,7 +7,7 @@ import moment from 'moment'
 import { Pagination } from 'flowbite-react'
 import ConfirmDelete from '@/Components/ConfirmDelete'
 import { useModalContext } from '@/Context/ModalContext'
-
+import { ToPdf } from '@/Helpers/toPdf'
 export default function Halls ({ auth, errors, halls: data }) {
   const [halls, setHalls] = useState(null)
   const [page, setPage] = useState(1)
@@ -63,7 +63,16 @@ export default function Halls ({ auth, errors, halls: data }) {
           <div className='flex gap-5 flex-col mx-5 lg:w-[80%] lg:mx-auto'>
             <div className='flex justify-between'>
               <h3 className='dark:text-white text-lg'>List of Halls</h3>
-              <LinkButton href='/halls/create'>add</LinkButton>
+              <div className='flex gap-5'>
+                <button
+                  className='bg-red-600 flex items-center justify-center  dark:bg-red-700 px-3 rounded font-bold text-slate-100'
+                  onClick={() => { ToPdf('Halls', ['ID', 'NAME', 'CAPACITY'], depureData(data)) }}
+                >
+                  <i className='fa-regular fa-file-pdf text-xl' />
+                </button>
+                <LinkButton href='/halls/create'>add</LinkButton>
+              </div>
+
             </div>
             <Table
               headers={['#', 'name', 'capacity', '']}

@@ -1,7 +1,6 @@
 import moment from 'moment'
 import './style.css'
 const Ticket = ({ func, ticket, client }) => {
-  console.log(ticket)
   return (
     <div className='ticket scale-75 lg:scale-100'>
       <div className='left'>
